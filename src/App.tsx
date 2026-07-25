@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate } from 'framer-motion';
-import { Menu, X, Sparkles, Mail, Linkedin, Instagram, Globe, ChevronDown, ArrowUp, Code, Brain, Database, Server, Cpu, Terminal, Send } from 'lucide-react';
+import { Menu, X, Sparkles, Mail, Linkedin, Instagram, Globe, ChevronDown, ArrowUp, Code, Cpu, Terminal, Send } from 'lucide-react';
 
 /* ============================================================
    GOWTHAM K PORTFOLIO — BTech CSE & AIML
@@ -846,13 +846,13 @@ const Contact = () => {
               </div>
               <span>linkedin.com/in/gowtham-k</span>
             </a>
-            <a href="#" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
+            <a href="https://instagram.com/gowtham.k.dev" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
               <div className="w-10 h-10 liquid-glass rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Instagram className="w-4 h-4" />
               </div>
               <span>@gowtham.k.dev</span>
             </a>
-            <a href="#" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
+            <a href="https://gowthamk.dev" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
               <div className="w-10 h-10 liquid-glass rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Globe className="w-4 h-4" />
               </div>
