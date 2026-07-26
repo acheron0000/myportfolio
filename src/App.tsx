@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate, useSpring } from 'framer-motion';
 import {
   Menu, X, Sparkles, Mail, Linkedin, Instagram, Globe, ChevronDown, ArrowUp,
   Send, Code, Cpu, Terminal, Lightbulb, Users, PenTool, Monitor, Figma, Palette, Eye, MousePointer
@@ -25,10 +25,8 @@ const NATURE_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOtt
 function use3DTilt(ref: React.RefObject<HTMLDivElement | null>) {
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
-  const transform = useSpring(
-    `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-    { damping: 25, stiffness: 300 }
-  );
+  const transformTemplate = useMotionTemplate`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  const transform = useSpring(transformTemplate, { damping: 25, stiffness: 300 });
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
