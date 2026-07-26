@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate, useSpring } from 'framer-motion';
 import {
   Menu, X, Sparkles, Mail, Linkedin, Instagram, Globe, ChevronDown, ArrowUp,
-  Send, Code, Cpu, Terminal, Lightbulb, Users, PenTool, Monitor, Figma, Palette, Eye, MousePointer
+  Send, Code, Cpu, Terminal, Lightbulb, PenTool, Monitor, Figma, Palette, Eye, MousePointer
 } from 'lucide-react';
 
 /* ============================================================
@@ -16,8 +16,6 @@ const BROTHER_LINKEDIN = "https://linkedin.com/in/[brother-linkedin]";
 const BROTHER_INSTAGRAM = "@[brother.instagram]";
 const BROTHER_WEBSITE = "[brother-portfolio-url]";
 const BROTHER_LOCATION = "Bangalore, India";
-
-const NATURE_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_080959_4cac5234-3573-464e-a5b7-76b94b8a7d61.mp4';
 
 /* ============================================================
    3D Tilt Hook
@@ -63,9 +61,10 @@ const Navbar = () => {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled ? 'liquid-glass-nav py-3' : 'bg-transparent py-5'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <a href="#" className="font-serif text-xl tracking-tight text-[#FEFFFF]/90 hover:text-[#FEFFFF] transition-colors">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="font-serif text-xl tracking-tight text-[#FEFFFF]/90 hover:text-[#FEFFFF] transition-colors">
             {BROTHER_NAME.split(' ')[0]}.
-          </a>
+          </button>
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <a key={link} href={`#${link.toLowerCase()}`} className="px-4 py-2 text-sm text-[#DEF2F1]/60 hover:text-[#FEFFFF] transition-colors rounded-full hover:bg-white/5">
