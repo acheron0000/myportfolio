@@ -167,7 +167,6 @@ const Card3D = ({ children, className = '', delay = 0 }: { children: React.React
 const Hero = () => {
   const [activeVideo, setActiveVideo] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [email, setEmail] = useState('');
 
   const videos = [
@@ -190,7 +189,7 @@ const Hero = () => {
     window.open(`mailto:${BROTHER_EMAIL}?subject=${subject}&body=${body}`, '_blank');
   };
 
-  const navLinks = ['About', 'Projects', 'Process', 'Explorations', 'Skills', 'Contact'];
+  
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-[#17252A]">
