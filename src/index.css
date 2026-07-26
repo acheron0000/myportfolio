@@ -72,22 +72,22 @@
 
   /* Teal gradient backgrounds */
   .bg-gradient-about {
-    background: linear-gradient(160deg, #17252A 0%, #1a2e2d 40%, #287A78 100%);
+    background: linear-gradient(160deg, #1f4642 0%, #3c7c78 40%, #8adbd4 100%);
   }
   .bg-gradient-projects {
-    background: linear-gradient(145deg, #17252A 0%, #1e3332 50%, #287A78 100%);
+    background: linear-gradient(145deg, #1f4642 0%, #3f7b79 50%, #8fe3dd 100%);
   }
   .bg-gradient-process {
-    background: linear-gradient(170deg, #17252A 0%, #1a2e2d 60%, #3AAFA9 100%);
+    background: linear-gradient(170deg, #1f4642 0%, #3c7c78 60%, #b6f4ee 100%);
   }
   .bg-gradient-explore {
-    background: linear-gradient(150deg, #17252A 0%, #1e3332 50%, #287A78 100%);
+    background: linear-gradient(150deg, #1f4642 0%, #3f7b79 50%, #8fe3dd 100%);
   }
   .bg-gradient-skills {
-    background: linear-gradient(165deg, #17252A 0%, #1a2e2d 40%, #3AAFA9 100%);
+    background: linear-gradient(165deg, #1f4642 0%, #3c7c78 40%, #b6f4ee 100%);
   }
   .bg-gradient-contact {
-    background: linear-gradient(155deg, #17252A 0%, #1e3332 50%, #287A78 100%);
+    background: linear-gradient(155deg, #1f4642 0%, #3f7b79 50%, #8fe3dd 100%);
   }
 
   .mesh-overlay { position: relative; }

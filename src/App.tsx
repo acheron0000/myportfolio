@@ -10,11 +10,11 @@ import {
    Colors: #17252A #287A78 #3AAFA9 #DEF2F1 #FEFFFF
    ============================================================ */
 
-const BROTHER_NAME = "[Brother's Name]";
+const BROTHER_NAME = "[Sahil sk]";
 const BROTHER_EMAIL = "[brother.email@example.com]";
 const BROTHER_LINKEDIN = "https://linkedin.com/in/[brother-linkedin]";
 const BROTHER_INSTAGRAM = "@[brother.instagram]";
-const BROTHER_WEBSITE = "[brother-portfolio-url]";
+const BROTHER_WEBSITE = "[]";
 const BROTHER_LOCATION = "Bangalore, India";
 
 /* ============================================================
@@ -138,7 +138,7 @@ const BackToTop = () => {
    Page Section Wrapper (NO video — gradient only)
    ============================================================ */
 const PageSection = ({ children, className = '', id, gradientClass }: { children: React.ReactNode; className?: string; id?: string; gradientClass: string }) => (
-  <section id={id} className={`relative min-h-screen w-full flex flex-col items-center justify-center px-6 py-20 ${gradientClass} mesh-overlay ${className}`}>
+  <section id={id} className={`relative min-h-screen w-full flex flex-col items-center justify-center px-6 py-28 ${gradientClass} mesh-overlay ${className}`}>
     <div className="relative z-10 w-full max-w-6xl mx-auto">{children}</div>
   </section>
 );
@@ -201,38 +201,6 @@ const Hero = () => {
       ))}
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#17252A]/40 via-transparent to-[#17252A]/60 pointer-events-none" />
       <div className="relative z-[2] flex flex-col h-full px-6 sm:px-12">
-        {/* Inner nav for hero only */}
-        <nav className="flex items-center justify-between py-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="font-serif italic text-xl sm:text-2xl text-[#FEFFFF]">
-            {BROTHER_NAME}
-          </motion.div>
-          <div className="hidden md:flex items-center gap-1 liquid-glass rounded-full px-2 py-1.5">
-            {navLinks.map((link) => (
-              <a key={link} href={`#${link.toLowerCase()}`} className="px-4 py-2 text-sm rounded-full text-[#DEF2F1]/90 hover:text-[#FEFFFF] hover:bg-white/10 transition-all">
-                {link}
-              </a>
-            ))}
-            <a href="#contact" className="ml-2 px-5 py-2 bg-[#3AAFA9] text-[#17252A] text-sm font-medium rounded-full hover:bg-[#3AAFA9]/90 transition-colors">
-              Get in Touch
-            </a>
-          </div>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden liquid-glass rounded-full p-3 w-12 h-12 flex items-center justify-center">
-            {menuOpen ? <X className="w-5 h-5 text-[#FEFFFF]" /> : <Menu className="w-5 h-5 text-[#FEFFFF]" />}
-          </button>
-        </nav>
-
-        {menuOpen && (
-          <div className="fixed inset-0 z-50 bg-[#17252A]/95 backdrop-blur-xl md:hidden pt-24 px-6">
-            <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <a key={link} href={`#${link.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="text-3xl font-serif text-[#FEFFFF]">
-                  {link}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div className="flex-1 flex flex-col items-center justify-center text-center -mt-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
             className="liquid-glass rounded-full px-6 py-2.5 mb-8 inline-flex items-center gap-2 text-sm text-[#DEF2F1]">
@@ -243,7 +211,7 @@ const Hero = () => {
           <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 }}
             className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] leading-[1.1] max-w-4xl mb-6 text-[#FEFFFF]">
             Designing the<br />
-            <span className="italic text-[#3AAFA9]">Future</span> of Digital<br />
+            <span className="italic text-[#DEF2F1]">Future</span> of Digital<br />
             Experiences
           </motion.h1>
 
