@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import {
   Menu, X, Sparkles, Mail, Linkedin, ArrowUp,
   Send, Code, Cpu, Terminal, Lightbulb, Users, PenTool, Monitor, Figma, Palette, Eye, MousePointer,
@@ -72,7 +72,7 @@ const Navbar = () => {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled ? 'liquid-glass-nav py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <a href="#" className="font-serif text-2xl tracking-tight text-[#FEFFFF]/90 hover:text-[#FEFFFF] transition-colors">
+          <a href="/" className="font-serif text-2xl tracking-tight text-[#FEFFFF]/90 hover:text-[#FEFFFF] transition-colors">
             {NAME.split(' ')[0]}<span className="text-[#3AAFA9]">.</span>
           </a>
           <div className="hidden md:flex items-center gap-1">
