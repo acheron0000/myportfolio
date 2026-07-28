@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import {
-  Menu, X, Mail, Linkedin, ArrowUp,
+  Menu, X, Sparkles, Mail, Linkedin, Instagram, Globe, ChevronDown, ArrowUp,
   Send, Code, Cpu, Terminal, Lightbulb, Users, PenTool, Monitor, Figma, Palette, Eye, MousePointer,
-  BookOpen, Headphones, Utensils, GraduationCap, MapPin, Globe, ChevronDown
+  BookOpen, Headphones, Utensils, GraduationCap, Award, FileText, MapPin
 } from 'lucide-react';
 
 /* ============================================================
@@ -22,6 +22,7 @@ const UNIVERSITY = "RV University";
 const COURSE_YEARS = "2025 — 2027";
 const UNDERGRAD = "BSc Animation & VFX";
 
+/* Project Images — place these folders in your public/ directory */
 const CURIXA_IMGS = Array.from({ length: 12 }, (_, i) => `/images/curixa/curixa-${i + 1}.jpg`);
 const AURISYNC_IMGS = Array.from({ length: 5 }, (_, i) => `/images/aurisync/aurisync-${i + 1}.jpg`);
 const COOKIT_IMGS = Array.from({ length: 9 }, (_, i) => `/images/cookit/cookit-${i + 1}.jpg`);
@@ -33,15 +34,15 @@ const HERO_VIDEOS = [
   { url: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_080959_4cac5234-3573-464e-a5b7-76b94b8a7d61.mp4', label: 'Quiet Dawn' },
 ];
 
+/* ============================================================
+   3D Tilt Hook
+   ============================================================ */
 function use3DTilt(ref: React.RefObject<HTMLDivElement | null>) {
-  const rotateX = useSpring(0, { damping: 25, stiffness: 300 });
-  const rotateY = useSpring(0, { damping: 25, stiffness: 300 });
-  const transformStyle = {
-    rotateX,
-    rotateY,
-    perspective: 1000,
-  };
-
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springX = useSpring(rotateX, { damping: 25, stiffness: 300 });
+  const springY = useSpring(rotateY, { damping: 25, stiffness: 300 });
+  const transform = useMotionTemplate`perspective(1000px) rotateX(${springX}deg) rotateY(${springY}deg)`;
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
@@ -50,15 +51,13 @@ function use3DTilt(ref: React.RefObject<HTMLDivElement | null>) {
     rotateY.set((e.clientX - cx) / 20);
     rotateX.set(-(e.clientY - cy) / 20);
   }, [rotateX, rotateY, ref]);
-
-  const handleMouseLeave = useCallback(() => {
-    rotateX.set(0);
-    rotateY.set(0);
-  }, [rotateX, rotateY]);
-
-  return { transformStyle, handleMouseMove, handleMouseLeave };
+  const handleMouseLeave = useCallback(() => { rotateX.set(0); rotateY.set(0); }, [rotateX, rotateY]);
+  return { transform, handleMouseMove, handleMouseLeave };
 }
 
+/* ============================================================
+   STICKY NAVBAR
+   ============================================================ */
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -72,8 +71,8 @@ const Navbar = () => {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled ? 'liquid-glass-nav py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <a href="/" className="font-serif text-2xl tracking-tight text-[#FEFFFF]/90 hover:text-[#FEFFFF] transition-colors">
-            {NAME}<span className="text-[#3AAFA9]">.</span>
+          <a href="#" className="font-serif text-2xl tracking-tight text-[#FEFFFF]/90 hover:text-[#FEFFFF] transition-colors">
+            
           </a>
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
@@ -112,12 +111,18 @@ const Navbar = () => {
   );
 };
 
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
   return <motion.div className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#287A78] to-[#3AAFA9] z-[101] origin-left shadow-[0_0_10px_rgba(58,175,169,0.5)]" style={{ scaleX }} />;
 };
 
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
 const BackToTop = () => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -137,21 +142,27 @@ const BackToTop = () => {
   );
 };
 
+/* ============================================================
+   SECTION WRAPPER
+   ============================================================ */
 const Section = ({ children, className = '', id, meshClass }: { children: React.ReactNode; className?: string; id?: string; meshClass: string }) => (
-  <section id={id} className={`relative min-h-screen w-full flex flex-col items-center justify-center px-6 py-16 lg:py-24 overflow-hidden ${meshClass} ${className}`}>
+  <section id={id} className={`relative min-h-screen w-full flex flex-col items-center justify-center px-6 py-28 lg:py-36 overflow-hidden scroll-mt-28 ${meshClass} ${className}`}>
     <div className="orb orb-1" />
     <div className="orb orb-2" />
     <div className="section-content w-full max-w-6xl mx-auto">{children}</div>
   </section>
 );
 
+/* ============================================================
+   3D CARD
+   ============================================================ */
 const Card3D = ({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { transformStyle, handleMouseMove, handleMouseLeave } = use3DTilt(ref);
+  const { transform, handleMouseMove, handleMouseLeave } = use3DTilt(ref);
   return (
     <motion.div ref={ref} initial={{ opacity: 0, y: 60, rotateX: 15 }} whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
       viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay, ease: [0.4, 0, 0.2, 1] }}
-      style={transformStyle} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
+      style={{ transform }} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
       className={`perspective-container ${className}`}>
       <div className="card-3d liquid-glass rounded-2xl p-8">
         <div className="card-3d-content">{children}</div>
@@ -160,9 +171,13 @@ const Card3D = ({ children, className = '', delay = 0 }: { children: React.React
   );
 };
 
+/* ============================================================
+   HERO — Video Background KEPT
+   ============================================================ */
 const Hero = () => {
   const [activeVideo, setActiveVideo] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [email, setEmail] = useState('');
 
   const handleVideoSwitch = (idx: number) => {
     if (idx === activeVideo || isTransitioning) return;
@@ -170,30 +185,54 @@ const Hero = () => {
     setTimeout(() => setIsTransitioning(false), 1000);
   };
 
+  const handleGetAccess = () => {
+    if (!email.trim()) return;
+    const subject = encodeURIComponent('Early Access Request — Portfolio');
+    const body = encodeURIComponent(`Hi Sahil,\n\nI would like to get early access. My email: ${email}\n\nBest regards`);
+    window.open(`mailto:${EMAIL}?subject=${subject}&body=${body}`, '_blank');
+  };
+
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-[#0a1517]">
+    <section className="relative w-full h-screen overflow-hidden bg-[#0a1517]">
       {HERO_VIDEOS.map((v, i) => (
         <video key={i} autoPlay muted loop playsInline
           className={`absolute inset-0 w-full h-full object-cover video-crossfade ${i === activeVideo ? 'opacity-100' : 'opacity-0'}`}
           src={v.url} />
       ))}
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#0a1517]/50 via-transparent to-[#0a1517]/70 pointer-events-none" />
-      <div className="relative z-[2] flex flex-col min-h-screen pb-8 px-6 sm:px-12 pt-24">
-        <div className="flex-1 flex flex-col items-center justify-center text-center">
-          <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.3 }}
+      <div className="relative z-[2] flex flex-col h-full px-6 sm:px-12">
+        <div className="flex-1 flex flex-col items-center justify-center text-center pt-12 md:pt-16">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+            className="liquid-glass rounded-full px-6 py-2.5 mb-10 inline-flex items-center gap-2 text-sm text-[#DEF2F1]">
+            <Sparkles className="w-4 h-4 text-[#3AAFA9]" />
+            <span>{COURSE} — {UNIVERSITY}</span>
+          </motion.div>
+
+          <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 }}
             className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] leading-[1.08] max-w-4xl mb-8 text-[#FEFFFF] text-glow-strong">
             Designing the<br />
             <span className="italic text-[#3AAFA9]">Future</span> of Digital<br />
             Experiences
           </motion.h1>
 
-          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
-            className="max-w-xl leading-relaxed mb-14 text-[#DEF2F1]/75 text-base sm:text-lg">
+          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
+            className="max-w-xl leading-relaxed mb-12 text-[#DEF2F1]/75 text-base sm:text-lg">
             A Master's student in UI/UX Design at RV University, crafting intuitive interfaces,
             design systems, and human-centred product strategies that bridge aesthetics with functionality.
           </motion.p>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="flex gap-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }} className="w-full max-w-md">
+            <div className="liquid-glass rounded-full p-1.5 flex items-center gap-2">
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleGetAccess()}
+                placeholder="Your Best Email"
+                className="flex-1 bg-transparent px-5 py-3 text-sm outline-none placeholder:text-[#DEF2F1]/35 text-[#FEFFFF] min-w-0" />
+              <button onClick={handleGetAccess} className="px-5 py-3 bg-[#3AAFA9] text-[#0a1517] text-sm font-semibold rounded-full hover:bg-[#3AAFA9]/90 transition-colors whitespace-nowrap flex items-center gap-2">
+                <Send className="w-3.5 h-3.5" /> Get Early Access
+              </button>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="flex gap-6 mt-14">
             {HERO_VIDEOS.map((v, i) => (
               <button key={i} onClick={() => handleVideoSwitch(i)}
                 className={`text-sm font-sans transition-all duration-500 pb-1 border-b-2 ${i === activeVideo ? 'border-[#3AAFA9] text-[#FEFFFF] opacity-100' : 'border-transparent text-[#DEF2F1] opacity-50 hover:opacity-80'}`}>
@@ -203,7 +242,7 @@ const Hero = () => {
           </motion.div>
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }} className="mt-auto pt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[#DEF2F1]/55 text-xs sm:text-sm font-sans">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} className="pb-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[#DEF2F1]/55 text-xs sm:text-sm font-sans">
           {['Masters UI/UX', UNIVERSITY, LOCATION, COURSE_YEARS].map((stat, i) => (
             <React.Fragment key={stat}>
               <span>{stat}</span>
@@ -216,6 +255,9 @@ const Hero = () => {
   );
 };
 
+/* ============================================================
+   ABOUT
+   ============================================================ */
 const About = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -296,6 +338,9 @@ const About = () => {
   );
 };
 
+/* ============================================================
+   PROJECTS DATA
+   ============================================================ */
 interface Project {
   id: number; title: string; category: string; icon: React.ElementType;
   problem: string; role: string; outcome: string;
@@ -309,7 +354,7 @@ const projects: Project[] = [
     role: 'UI/UX Designer — User Application (Team of 2). Designed the complete user-facing application from scratch: research, user personas, journey mapping, information architecture, and all user-side screens.',
     outcome: 'Good Hierarchy with decent Interactive visuals. Streamlined onboarding and personalised meal planning flow.',
     images: [COOKIT_IMGS[4], COOKIT_IMGS[2], COOKIT_IMGS[3]],
-    processImages: [COOKIT_IMGS[0], COOKIT_IMGS[6]]
+    processImages: [COOKIT_IMGS[0], COOKIT_IMGS[6], COOKIT_IMGS[7]]
   },
   {
     id: 2, title: 'AuriSync', category: 'Desktop Audio App', icon: Headphones,
@@ -325,19 +370,19 @@ const projects: Project[] = [
     role: 'Concept Lead, Researcher & UX Strategist (Team of 3). Originated the core product idea and led the design strategy.',
     outcome: 'A finite content consumption platform with AI-curated learning playlists, goal-aligned session structure, and conscious completion states — designed to replace passive infinite scrolling.',
     images: [CURIXA_IMGS[0], CURIXA_IMGS[5], CURIXA_IMGS[8]],
-    processImages: [CURIXA_IMGS[1], CURIXA_IMGS[2]]
+    processImages: [CURIXA_IMGS[1], CURIXA_IMGS[2], CURIXA_IMGS[3]]
   }
 ];
 
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const { transformStyle, handleMouseMove, handleMouseLeave } = use3DTilt(cardRef);
+  const { transform, handleMouseMove, handleMouseLeave } = use3DTilt(cardRef);
 
   return (
     <motion.div ref={cardRef} initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.8, delay: index * 0.15, ease: [0.4, 0, 0.2, 1] }}
-      style={transformStyle} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
+      style={{ transform }} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
       className="perspective-container w-full">
       <div className="card-3d liquid-glass rounded-3xl overflow-hidden group cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
         <div className="relative h-72 sm:h-96 overflow-hidden">
@@ -373,7 +418,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               <div className="pt-8 border-t border-[#3AAFA9]/10 space-y-8">
                 <div>
                   <h4 className="text-xs uppercase tracking-[0.2em] text-[#3AAFA9] font-semibold mb-4">Process Screens</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {project.processImages.map((img, i) => (
                       <div key={i} className="aspect-[4/3] rounded-xl overflow-hidden liquid-glass-dark">
                         <img src={img} alt={`${project.title} Process ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
@@ -409,11 +454,11 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 const ProjectsSection = () => (
   <Section id="projects" meshClass="bg-mesh-warm">
     <div className="relative z-10 max-w-5xl w-full">
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
         <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl mb-5 text-[#FEFFFF] text-glow">Selected Works</h2>
         <p className="text-[#DEF2F1]/60 max-w-lg mx-auto text-lg">A curated collection of projects spanning interface design, systems, and AI-powered platforms.</p>
       </motion.div>
-      <div className="space-y-10">
+      <div className="space-y-12">
         {projects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
@@ -422,6 +467,9 @@ const ProjectsSection = () => (
   </Section>
 );
 
+/* ============================================================
+   DESIGN PROCESS
+   ============================================================ */
 interface ProcessStepData { title: string; desc: string; }
 const processSteps: ProcessStepData[] = [
   { title: 'Discover', desc: 'User interviews, competitive audits, and stakeholder alignment to uncover genuine needs and behavioural patterns.' },
@@ -485,10 +533,13 @@ const DesignProcess = () => (
   </Section>
 );
 
+/* ============================================================
+   EXPLORATIONS — Using actual prototype screenshots
+   ============================================================ */
 const Explorations = () => {
   const items = [
     { img: CURIXA_IMGS[6], caption: 'Curixa — Active Journeys' },
-    { img: COOKIT_IMGS[4], caption: 'CookIT — Home & Menu' },
+    { img: COOKIT_IMGS[4], caption: 'Portfolio 2026' },
     { img: AURISYNC_IMGS[0], caption: 'AuriSync — Smart Mode' },
     { img: CURIXA_IMGS[10], caption: 'Curixa — Completion State' },
     { img: COOKIT_IMGS[3], caption: 'CookIT — Recipe Detail' },
@@ -501,21 +552,21 @@ const Explorations = () => {
   return (
     <Section id="explorations" meshClass="bg-mesh">
       <div className="relative z-10 max-w-6xl w-full">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
           <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl mb-5 text-[#FEFFFF] text-glow">Explorations</h2>
           <p className="text-[#DEF2F1]/60 text-lg">Raw thinking. Intellectual curiosity. Design maturity.</p>
         </motion.div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
           {items.map((item, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 40, rotateX: 10 }} whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
               viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, delay: i * 0.08, ease: [0.4, 0, 0.2, 1] }}
-              whileHover={{ scale: 1.03, zIndex: 10 }} className="group perspective-container">
-              <div className="card-3d liquid-glass rounded-2xl overflow-hidden cursor-pointer">
+              whileHover={{ scale: 1.04, zIndex: 10 }} className="group perspective-container">
+              <div className="card-3d liquid-glass rounded-3xl overflow-hidden cursor-pointer shadow-2xl shadow-[#00000040]">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img src={item.img} alt={item.caption} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
-                <div className="p-4">
-                  <p className="text-sm text-[#DEF2F1]/70 font-medium">{item.caption}</p>
+                <div className="p-6">
+                  <p className="text-sm text-[#DEF2F1]/80 font-medium leading-relaxed">{item.caption}</p>
                 </div>
               </div>
             </motion.div>
@@ -526,6 +577,9 @@ const Explorations = () => {
   );
 };
 
+/* ============================================================
+   SKILLS — Real data from resume
+   ============================================================ */
 const Skills = () => {
   const skillCategories = [
     { title: 'Design Tools', items: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator', 'Adobe Premiere Pro', 'After Effects', 'Autodesk Maya (3D)'] },
@@ -552,12 +606,12 @@ const Skills = () => {
   return (
     <Section id="skills" meshClass="bg-mesh-warm">
       <div className="relative z-10 max-w-6xl w-full">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
           <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl mb-5 text-[#FEFFFF] text-glow">Skills & Experience</h2>
           <p className="text-[#DEF2F1]/60 max-w-xl mx-auto text-lg">Technical proficiencies, academic exposure, and professional competencies.</p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-20">
           {skillCategories.map((cat, i) => (
             <Card3D key={cat.title} delay={i * 0.1}>
               <h3 className="text-sm font-semibold mb-5 text-[#3AAFA9] uppercase tracking-wider">{cat.title}</h3>
@@ -609,6 +663,9 @@ const Skills = () => {
   );
 };
 
+/* ============================================================
+   CONTACT — Real contact info
+   ============================================================ */
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
@@ -662,7 +719,7 @@ const Contact = () => {
           </div>
 
           <div className="pt-8 border-t border-[#3AAFA9]/10">
-            <p className="text-[#DEF2F1]/25 text-sm">{NAME}</p>
+            <p className="text-[#DEF2F1]/25 text-sm">{NAME} — Portfolio 2026</p>
             <p className="text-[#DEF2F1]/15 text-xs mt-2">Designed with intention. Built with passion.</p>
           </div>
         </div>
@@ -701,13 +758,15 @@ const Contact = () => {
   );
 };
 
+/* ============================================================
+   MAIN APP
+   ============================================================ */
 export default function App() {
   return (
     <div className="relative bg-[#0a1517] text-[#FEFFFF]">
       <ScrollProgress />
       <Navbar />
       <Hero />
-      <div className="w-full bg-[#0a1517]" style={{ height: "0px" }} />
       <About />
       <ProjectsSection />
       <DesignProcess />
